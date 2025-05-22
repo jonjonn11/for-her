@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You My Precious</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: absolute;
+            color: rgba(255, 105, 180, 0.6);
+            font-size: 20px;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%, 90% { opacity: 1; }
+            50% { transform: translateY(-10px) rotate(180deg); }
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            color: #8b0000;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: glow 2s ease-in-out infinite alternate;
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.1), 0 0 10px rgba(255, 105, 180, 0.3); }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.1), 0 0 20px rgba(255, 105, 180, 0.6); }
+        }
+
+        .subtitle {
+            color: #d63384;
+            font-size: 1.2rem;
+            font-style: italic;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Card Sections */
+        .section {
+            background: rgba(255, 255, 255, 0.9);
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.4s; }
+        .section:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .section h2 {
+            color: #8b0000;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .section p {
+            color: #6c757d;
+            line-height: 1.8;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+            background: linear-gradient(45deg, #ff5252, #ff7979);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Special Message Box */
+        .message-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .message-box:hover {
+            transform: scale(1);
+        }
+
+        .message-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Photo Gallery */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .photo-placeholder {
+            height: 200px;
+            background: linear-gradient(45deg, #ffeaa7, #fab1a0);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2d3436;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .photo-placeholder:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        /* Interactive Elements */
+        .love-meter {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .meter-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            width: 0;
+            border-radius: 10px;
+            transition: width 2s ease;
+        }
+
+        /* Romantic Quote */
+        .quote {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            font-style: italic;
+            font-size: 1.3rem;
+            color: #8b0000;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .quote::before,
+        .quote::after {
+            content: '"';
+            font-size: 4rem;
+            color: #ff6b6b;
+            position: absolute;
+        }
+
+        .quote::before {
+            top: -10px;
+            left: 20px;
+        }
+
+        .quote::after {
+            bottom: -40px;
+            right: 20px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #8b0000;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 1rem; }
+            .section { padding: 1.5rem; }
+        }
+
+        /* Heart Button */
+        .heart-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 20px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .heart-btn:before {
+            content: '♥';
+            position: absolute;
+            left: -30px;
+            font-size: 1.5rem;
+            animation: heartFloat 2s ease-in-out infinite;
+        }
+
+        .heart-btn:after {
+            content: '♥';
+            position: absolute;
+            right: -30px;
+            font-size: 1.5rem;
+            animation: heartFloat 2s ease-in-out infinite reverse;
+        }
+
+        .heart-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+            background: linear-gradient(45deg, #ff5252, #ff7979);
+        }
+
+        @keyframes heartFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Raining Hearts and Emojis */
+        .emoji-rain {
+            position: fixed;
+            top: -50px;
+            font-size: 20px;
+            animation: rain 4s linear infinite;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes rain {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Cute Puppy */
+        .puppy-container {
+            text-align: center;
+            margin: 3rem 0;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .puppy {
+            font-size: 6rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Hearts -->
+    <div class="heart" style="left: 10%; animation-delay: 0s;">♥</div>
+    <div class="heart" style="left: 20%; animation-delay: 1s;">♥</div>
+    <div class="heart" style="left: 30%; animation-delay: 2s;">♥</div>
+    <div class="heart" style="left: 40%; animation-delay: 3s;">♥</div>
+    <div class="heart" style="left: 50%; animation-delay: 4s;">♥</div>
+    <div class="heart" style="left: 60%; animation-delay: 5s;">♥</div>
+    <div class="heart" style="left: 70%; animation-delay: 1.5s;">♥</div>
+    <div class="heart" style="left: 80%; animation-delay: 2.5s;">♥</div>
+    <div class="heart" style="left: 90%; animation-delay: 3.5s;">♥</div>
+
+    <header>
+        <h1>For You, My Precious</h1>
+        <p class="subtitle">A special place in the digital world, just for us</p>
+    </header>
+
+    <div class="container">
+        <div class="section">
+            <h2>BAKIT IKAW?</h2>
+            <p>Walang rason e basta ikaw po, pramis</p>
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <button class="btn" onclick="showCompliment()">Show me Love</button>
+                <button class="btn" onclick="playRomanticSound()">Play mo Muna ito please <3</button>
+            </div>
+        </div>
+
+        <div class="quote">
+            In your eyes, I found my home. In your heart, I found my love. In your soul, I found my mate.
+        </div>
+
+        <div class="section">
+            <h2>Our Love Meter</h2>
+            <div class="love-meter">
+                <p>How much do I love you?</p>
+                <div class="meter-bar">
+                    <div class="meter-fill" id="loveMeter"></div>
+                </div>
+                <button class="btn" onclick="fillLoveMeter()">Measure My Love</button>
+                <p id="loveResult" style="margin-top: 1rem; font-weight: bold; color: #ff6b6b;"></p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💕</h2>
+            <p>Tignan natin kung sino ang palihim na nagmamahal sayo</p>
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="heart-btn" onclick="goToFB()">YES</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cute Puppy -->
+    <div class="puppy-container">
+        <div class="puppy">🐶</div>
+        <p style="color: #8b0000; font-size: 1.2rem; font-weight: bold;">Even this little guy wants to see you smile! 🐾</p>
+    </div>
+
+    <footer>
+        <p>si pogiii </p>
+    </footer>
+
+    <script>
+        // Compliments array
+       /* const compliments = [
+           "Your smile could light up the darkest room 🌟",
+            "You make ordinary moments feel magical ✨",
+            "Your kindness makes the world a better place 💕",
+            "You're absolutely radiant today 🌸",
+            "Your laugh is my favorite sound 🎵",
+            "You have the most beautiful soul 💖",
+            "You make me want to be a better person 🌹",
+            "Every day with you feels like a blessing 🙏" */
+        
+
+        function showCompliment() {
+            const randomCompliment = compliments[Math.floor(Math.random() * compliments.length)];
+            alert(randomCompliment);
+            createHeartBurst();
+        }
+
+        // Audio player for the romantic song
+        let romanticSong = null;
+        let isPlaying = false;
+
+        function playRomanticSound() {
+            if (!romanticSong) {
+                // Replace 'your-song.mp3' with the path to your MP3 file
+                romanticSong = new Audio('Rob Deniel - Miss Miss.mp3');
+                romanticSong.volume = 0.7;
+                romanticSong.loop = false;
+                
+                romanticSong.addEventListener('error', function() {
+                  
+                    // Fallback to synthetic romantic melody
+                    playFallbackMelody();
+                });
+                
+                romanticSong.addEventListener('ended', function() {
+                    isPlaying = false;
+                    updatePlayButton();
+                });
+            }
+            
+            if (!isPlaying) {
+                romanticSong.play().then(() => {
+                    isPlaying = true;
+                    updatePlayButton();
+                    createHeartBurst();
+                    
+                }).catch(error => {
+                    console.log("Playback failed:", error);
+                    playFallbackMelody();
+                });
+            } else {
+                romanticSong.pause();
+                romanticSong.currentTime = 0;
+                isPlaying = false;
+                updatePlayButton();
+            }
+        }
+
+        function updatePlayButton() {
+            const button = document.querySelector('button[onclick="playRomanticSound()"]');
+            if (button) {
+                button.textContent = isPlaying ? "⏸️ Pause Our Song" : "▶️ Play Our Song";
+            }
+        }
+
+        function playFallbackMelody() {
+            // Fallback romantic melody if MP3 doesn't load
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+            oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.5); // E5
+            oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 1); // G5
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 2);
+        }
+
+        function fillLoveMeter() {
+            const meter = document.getElementById('loveMeter');
+            const result = document.getElementById('loveResult');
+            
+            // Animate to 100%
+            meter.style.width = '100%';
+            
+            setTimeout(() => {
+                result.textContent = "SYMPRE, wantusawa pooo 💕";
+                createSparkles();
+            }, 2000);
+        }
+
+        // Facebook redirect function
+        function goToFB() {
+            createHeartBurst();
+            setTimeout(() => {
+                window.open('https://www.facebook.com/justreggae20/', '_blank');
+            }, 1000);
+        }
+
+        // Create raining emojis effect
+        function createEmojiRain() {
+            const emojis = ['💕', '💖', '💗', '💝', '💘', '💞', '💓', '💌', '🌹', '✨', '⭐', '🌟', '💫', '🎀', '🦋'];
+            
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'emoji-rain';
+                    emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.left = Math.random() * 100 + '%';
+                    emoji.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                    emoji.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(emoji);
+                    
+                    setTimeout(() => {
+                        emoji.remove();
+                    }, 6000);
+                }, i * 200);
+            }
+        }
+
+        // Start emoji rain on scroll
+        let emojiRainInterval;
+        window.addEventListener('scroll', () => {
+            if (!emojiRainInterval) {
+                createEmojiRain();
+                emojiRainInterval = setInterval(createEmojiRain, 2000);
+                
+                // Stop after 10 seconds
+                setTimeout(() => {
+                    clearInterval(emojiRainInterval);
+                    emojiRainInterval = null;
+                }, 10000);
+            }
+        });
+
+        function createSparkles() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.left = Math.random() * 100 + '%';
+                    sparkle.style.top = Math.random() * 100 + 'vh';
+                    sparkle.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(sparkle);
+                    
+                    setTimeout(() => {
+                        sparkle.remove();
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+
+        function createHeartBurst() {
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '💖';
+                    heart.style.position = 'fixed';
+                    heart.style.left = '50%';
+                    heart.style.top = '50%';
+                    heart.style.fontSize = '2rem';
+                    heart.style.pointerEvents = 'none';
+                    heart.style.zIndex = '1000';
+                    heart.style.transform = `translate(-50%, -50%) translate(${(Math.random() - 0.5) * 200}px, ${(Math.random() - 0.5) * 200}px)`;
+                    heart.style.animation = 'fadeOut 2s ease-out forwards';
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 2000);
+                }, i * 100);
+            }
+        }
+
+        function createRainbowEffect() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeab7', '#d1a3ff'];
+            document.body.style.background = `linear-gradient(45deg, ${colors.join(', ')})`;
+            
+            setTimeout(() => {
+                document.body.style.background = 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%)';
+            }, 3000);
+        }
+
+        // Add fadeOut animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5) translateY(-100px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Auto-start some effects
+        setTimeout(createSparkles, 2000);
+        setTimeout(() => {
+            document.getElementById('loveMeter').style.width = '85%';
+        }, 3000);
+
+        // Start emoji rain after 3 seconds
+        setTimeout(createEmojiRain, 3000);
+    </script>
+</body>
+</html>
